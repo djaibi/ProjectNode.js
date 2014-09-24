@@ -6,3 +6,5 @@ To test my app you need to edit the file database.js
 npm install
 
 node server.js
+
+http://localhost:8000/
