@@ -1,0 +1,92 @@
+<!-- views/posts.ejs -->
+<!doctype html>
+<html>
+<head>
+	<title>Node example</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<style>
+		body 		{ padding-top:80px; word-wrap:break-word; }
+	</style>
+</head>
+<body>
+<div class="container">
+
+	<div class="page-header text-center">
+		<h1><span class="fa fa-anchor"></span> Posts Page</h1>
+		<a href="/main" class="btn btn-default btn-sm">Main</a>
+		<a href="/auth/logout" class="btn btn-default btn-sm">Logout</a>
+	</div>
+
+	<div class="row">
+
+		<div class="col-sm-3">
+			<ul>
+			<% for(var i=0; i<posts.length; i++) {%>
+				<li>
+					<a href="#" class="postlist" data-one="<%=posts[i]._id%>"><%=posts[i].title%></a>
+				</li>
+			<% } %>
+				<li><a href="#" class="addnewpost">New Post</a></li>
+			</ul>
+		</div>
+
+
+		<div class="col-sm-6">
+				<div id='content'> 
+
+				</div>
+		</div>
+
+	</div>
+
+</div>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="./public/javascript/ejs_production.js"></script>
+
+	<script type="text/javascript">
+
+$(function(){	
+	$(".postlist").click(function(evt) {
+	    evt.preventDefault();
+	    var $self = $(this);
+	    var test = $self.data("one");
+
+	    ajaxcall_post($self.data("one"));
+	});
+});
+
+$(function(){	
+	$(".addnewpost").click(function(evt) {
+	    evt.preventDefault();
+	    $('#content').html(new EJS({url: './app/views/addpost.ejs'}).render());
+	});
+});
+
+function ajaxcall_post(data){
+	var obj = {};
+	obj._id = data;
+	console.log(JSON.stringify(obj));
+	$.ajax({
+		type: 'POST',
+		data: JSON.stringify(obj),
+		contentType: 'application/json',
+		url: '/posts',
+	    beforeSend : function (xhr) {
+	        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+	    }, 	
+		success: function(data) {
+			console.log('success');
+			console.log(jQuery.parseJSON(data));
+			new EJS({url: './app/views/postinfo.ejs'}).update('content', jQuery.parseJSON(data));
+		}
+	});
+}
+	
+</script>
+
+</body>
+</html>
+

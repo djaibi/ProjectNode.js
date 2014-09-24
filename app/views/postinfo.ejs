@@ -1,0 +1,8 @@
+<div class="well">
+	<h1><%=title%></h1>
+	<p><%=body%></p>
+	<p>created by : <%=user.local.pseudo%></p>
+	<% if (owner) { %>
+	<a href="/posts/delete/<%= _id %>" title="Delete this post">Delete</a>
+	<%	}	%>
+</div>
