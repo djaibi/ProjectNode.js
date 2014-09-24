@@ -27,12 +27,17 @@
 					<a href="#" class="postlist" data-one="<%=posts[i]._id%>"><%=posts[i].title%></a>
 				</li>
 			<% } %>
-				<li><a href="#" class="addnewpost">New Post</a></li>
+				<li><a href="#" class="formpost_new">New Post</a></li>
 			</ul>
 		</div>
 
 
 		<div class="col-sm-6">
+
+				<% if (message.length > 0) { %>
+					<div class="alert alert-danger"><%= message %></div>
+				<% } %>
+
 				<div id='content'> 
 
 				</div>
@@ -58,10 +63,18 @@ $(function(){
 	});
 });
 
+$(function(){
+	var error_formpost=<%=message.length%>;
+	if( error_formpost > 0) {
+		$('#content').html(new EJS({url: './app/views/formpost.ejs'}).render({action : 'add', path : '/posts/add'}));	
+	}
+});
+
+
 $(function(){	
-	$(".addnewpost").click(function(evt) {
+	$(".formpost_new").click(function(evt) {
 	    evt.preventDefault();
-	    $('#content').html(new EJS({url: './app/views/addpost.ejs'}).render());
+	    $('#content').html(new EJS({url: './app/views/formpost.ejs'}).render({action : 'add', path : '/posts/add'}));
 	});
 });
 
@@ -78,9 +91,13 @@ function ajaxcall_post(data){
 	        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 	    }, 	
 		success: function(data) {
-			console.log('success');
-			console.log(jQuery.parseJSON(data));
-			new EJS({url: './app/views/postinfo.ejs'}).update('content', jQuery.parseJSON(data));
+			data = jQuery.parseJSON(data);
+			new EJS({url: './app/views/postinfo.ejs'}).update('content', data);
+			$(".formpost").click(function(evt) {
+				console.log('test');
+	   			evt.preventDefault();
+	    		$('#content').html(new EJS({url: './app/views/formpost.ejs'}).render({action : 'update', path : '/posts/update/'+data._id}));
+			});
 		}
 	});
 }

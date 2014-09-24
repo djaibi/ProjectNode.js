@@ -1,5 +1,5 @@
 function home(req,res) {
-  res.render('index.ejs', { message: req.flash('index'), login: req.isAuthenticated() });
+	res.render('index.ejs', { message: req.flash('index'), login: req.isAuthenticated() });
 }
 
 function profile(req,res) {

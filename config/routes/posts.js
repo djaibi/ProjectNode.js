@@ -15,6 +15,10 @@ function postsRoutes(app,passport) {
     	//.get(posts.new)
     	.post(posts.create);
 
+    postsRouter.route('/update/:id')
+      //.get(posts.new)
+      .post(posts.update);
+
     postsRouter.route('/delete/:id')
       .get(posts.delete);
 

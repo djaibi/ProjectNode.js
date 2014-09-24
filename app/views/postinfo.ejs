@@ -6,3 +6,7 @@
 	<a href="/posts/delete/<%= _id %>" title="Delete this post">Delete</a>
 	<%	}	%>
 </div>
+
+<% if (owner) { %>
+<a href="#" class="formpost btn btn-default btn-sm">Edit</a>
+<%	}	%>
